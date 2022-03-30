@@ -22,20 +22,18 @@ namespace To_Do_API.Controllers
             _config = config;
         }
 
-        //[HttpGet(Name = "GetWeatherForecast")]
-        //[Route("~/GetWeather")]
-        //public IEnumerable<WeatherForecast> Get()
-        //{
-        //    return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-        //    {
-        //        Date = DateTime.Now.AddDays(index),
-        //        TemperatureC = Random.Shared.Next(-20, 55),
-        //        Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-        //    })
-        //    .ToArray();
-        //}
-        [HttpGet(Name = "GetRandomText")]
-        //[Route("/GetText")]
+        [HttpGet("GetWeather", Name = "GetWeatherForecast")]
+        public IEnumerable<WeatherForecast> Get()
+        {
+            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+            {
+                Date = DateTime.Now.AddDays(index),
+                TemperatureC = Random.Shared.Next(-20, 55),
+                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
+            })
+            .ToArray();
+        }
+        [HttpGet("GetText", Name = "GetRandomText")]
         public string GetText()
         {
             return _config.GetRequiredSection("RandomText").GetValue<string>("Text1");

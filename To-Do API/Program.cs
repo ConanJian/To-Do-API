@@ -6,9 +6,7 @@ string configFilePath = ".\\devSettings.json";
 IConfiguration config = new ConfigurationBuilder().AddJsonFile(configFilePath)
     .Build();
 
-string valueInConfigFile = config.GetRequiredSection("RandomText").GetValue<string>("Text1");
-//string baseDirectory = AppContext.BaseDirectory;
-//Console.WriteLine(valueInConfigFile + "\n" + baseDirectory);
+builder.Configuration.AddConfiguration(config);
 
 // Add services to the container.
 builder.Services.AddControllers();
@@ -16,7 +14,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddSingleton(config);
+builder.Services.AddSingleton(builder.Configuration);
 
 var app = builder.Build();
 
