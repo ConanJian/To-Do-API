@@ -10,20 +10,21 @@ namespace DatabaseConnection
         public DbConnection(string connectionString)
         { 
             _connection = new SqlConnection(connectionString);
-            _connection.Open();
         }
         public DataSet ReadData(string sqlQuery)
         {
+            _connection.Open();
             DataSet result = new DataSet();
-            SqlDataAdapter adpater = new SqlDataAdapter();
+            SqlDataAdapter adapater = new SqlDataAdapter();
             SqlCommand sqlCommand = new SqlCommand(sqlQuery, _connection);
-            adpater.SelectCommand = sqlCommand;
-            //adpater.MissingSchemaAction = MissingSchemaAction.AddWithKey;
-            adpater.Fill(result);
+            adapater.SelectCommand = sqlCommand;
+            //adapater.MissingSchemaAction = MissingSchemaAction.AddWithKey;
+            adapater.Fill(result);
             return result;
         }
         public void ModifyData(string sqlQuery)
         {
+            _connection.Open();
             using (SqlCommand sqlCommand = new SqlCommand(sqlQuery, _connection))
             {
                 sqlCommand.CommandType = CommandType.Text;
