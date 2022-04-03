@@ -4,7 +4,7 @@ using System.Data.SqlClient;
 
 namespace DatabaseConnection
 {
-    internal class DbConnection: IDisposable
+    internal class DbConnection
     {
         private readonly SqlConnection _connection;
         public DbConnection(string connectionString)
@@ -15,11 +15,13 @@ namespace DatabaseConnection
         {
             _connection.Open();
             DataSet result = new DataSet();
-            SqlDataAdapter adapater = new SqlDataAdapter();
             SqlCommand sqlCommand = new SqlCommand(sqlQuery, _connection);
+
+            //Create Adapater to convert results of sql into DataSet
+            SqlDataAdapter adapater = new SqlDataAdapter();
             adapater.SelectCommand = sqlCommand;
-            //adapater.MissingSchemaAction = MissingSchemaAction.AddWithKey;
             adapater.Fill(result);
+            _connection.Close();
             return result;
         }
         public void ModifyData(string sqlQuery)
@@ -30,16 +32,7 @@ namespace DatabaseConnection
                 sqlCommand.CommandType = CommandType.Text;
                 sqlCommand.ExecuteNonQuery();
             }
-        }
-        public void Dispose()
-        {
-            _connection.Dispose();
+            _connection.Close();
         }
     }
 }
-
-/*
-    add dependency injection for connection
-    get connection string from configuration file
-    
- */

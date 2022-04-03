@@ -17,13 +17,29 @@ namespace DatabaseConnection
         {
             List<ToDoModel> list = new List<ToDoModel>();
 
-            string readDataQuery = $"select 'message', 'priority'" +
+            string readDataQuery = $"select *" +
                 $" from ToDo" +
                 $" order by listNum";
             DataTable data = _dbConnection.ReadData(readDataQuery).Tables[0];
 
             foreach (DataRow row in data.Rows)
             { 
+                list.Add(ConvertDataToModel(row));
+            }
+            return list;
+        }
+        public List<ToDoModel> GetPriorityToDoList(int priority)
+        {
+            List<ToDoModel> list = new List<ToDoModel>();
+
+            string readDataQuery = $"select *" +
+                $" from ToDo" +
+                $" where \"priority\" = {priority}" +
+                $" order by listNum";
+            DataTable data = _dbConnection.ReadData(readDataQuery).Tables[0];
+
+            foreach (DataRow row in data.Rows)
+            {
                 list.Add(ConvertDataToModel(row));
             }
             return list;
