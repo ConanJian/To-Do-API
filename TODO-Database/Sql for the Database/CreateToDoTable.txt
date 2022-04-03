@@ -1,8 +1,7 @@
 ﻿create table ToDo(
     listNum int identity(1,1) primary key,
-    'message' varchar(max),
-    'priority' int 
-    check(importance in (1, 2, 3))
+    "message" varchar(max),
+    "priority" int check("priority" in (1, 2, 3))
 )
 
 --'Utmost', 'Do Soon', 'Can Wait' = 1, 2, 3

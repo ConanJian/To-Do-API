@@ -1,7 +1,7 @@
 ﻿Shows All ToDos when load up Terminal.
 (list in order of listNum ASC)
 
-select 'message', 'priority'
+select "message", "priority"
 from Todo
 order by listNum ASC;
 
@@ -10,15 +10,15 @@ order by listNum ASC;
 --------------
 Can ask for ToDos of specific importance.
 
-select 'message', 'priority'
+select "message", "priority"
 from Todo
-where 'priority = variableHere(Enum datatype)
+where "priority" = variableHere(Enum datatype)
 order by listNum ASC;
 
 --------------
 Add Todos.
 
-insert into ToDo('message', 'priority)
+insert into ToDo("message", "priority")
 values (variable1Here, variable2Here);
 
 --------------
