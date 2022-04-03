@@ -1,6 +1,6 @@
 var builder = WebApplication.CreateBuilder(args);
 
-//Create Custom Configuration
+//Note: Create Custom Configuration Class that inherits from IConfiguration and uses it
 
 string configFilePath = ".\\devSettings.json";
 IConfiguration config = new ConfigurationBuilder().AddJsonFile(configFilePath)
