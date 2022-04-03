@@ -1,8 +1,0 @@
-{
-  "ConnectionStrings": {
-    "DefaultConnection": "Data Source=DESKTOP-S0HM9HP\\SQLEXPRESS;Initial Catalog=ToDo;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"
-  },
-  "RandomText": {
-    "Text1":  "This is a ToDo Application"
-  }
-}
