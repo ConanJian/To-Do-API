@@ -20,7 +20,8 @@ namespace DatabaseConnection
             this.priority = priority;
         }
     }
-    public enum Priority { 
+    public enum Priority
+    {
         Utmost = 1,
         Do_Soon = 2,
         Can_Wait = 3
