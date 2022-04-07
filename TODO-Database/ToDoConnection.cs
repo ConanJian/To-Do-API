@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace DatabaseConnection
 {
@@ -13,14 +14,15 @@ namespace DatabaseConnection
         { 
             _dbConnection = new DbConnection(connectionString);
         }
-        public List<ToDoModel> GetToDoList()
+        public async Task<List<ToDoModel>> GetToDoList()
         {
             List<ToDoModel> list = new List<ToDoModel>();
 
             string readDataQuery = $"select *" +
                 $" from ToDo" +
                 $" order by listNum;";
-            DataTable data = _dbConnection.ReadData(readDataQuery).Tables[0];
+            DataSet dataSet = await _dbConnection.ReadData(readDataQuery);
+            DataTable data = dataSet.Tables[0];
 
             foreach (DataRow row in data.Rows)
             { 
@@ -28,7 +30,7 @@ namespace DatabaseConnection
             }
             return list;
         }
-        public List<ToDoModel> GetToDoListByPriority(Priority priority) 
+        public async Task<List<ToDoModel>> GetToDoListByPriority(Priority priority) 
         {
             List<ToDoModel> list = new List<ToDoModel>();
 
@@ -36,7 +38,8 @@ namespace DatabaseConnection
                 $" from ToDo" +
                 $" where \"priority\" = {(int)priority}" +
                 $" order by listNum;";
-            DataTable data = _dbConnection.ReadData(readDataQuery).Tables[0];
+            DataSet dataSet = await _dbConnection.ReadData(readDataQuery);
+            DataTable data = dataSet.Tables[0];
 
             foreach (DataRow row in data.Rows)
             {
@@ -44,20 +47,20 @@ namespace DatabaseConnection
             }
             return list;
         }
-        public void InsertToDoItem(string message, int priority)
+        public async Task InsertToDoItem(string message, int priority)
         {
             string sqlQuery = $"insert into ToDo(\"message\", \"priority\")" +
                 $" values('{message}', {priority});";
 
-            _dbConnection.ModifyData(sqlQuery);
+            await _dbConnection.ModifyData(sqlQuery);
         }
-        public void DeleteToDoItem(int listNum)
+        public async Task DeleteToDoItem(int listNum)
         {
             string sqlQuery = $"delete from ToDo" +
                 $" where listNum={listNum};";
-            _dbConnection.ModifyData(sqlQuery);
+            await _dbConnection.ModifyData(sqlQuery);
         }
-        public List<ToDoModel> GetPriorityToDoList(int priority)
+        public async Task<List<ToDoModel>> GetPriorityToDoList(int priority)
         {
             List<ToDoModel> list = new List<ToDoModel>();
 
@@ -65,7 +68,8 @@ namespace DatabaseConnection
                 $" from ToDo" +
                 $" where \"priority\" = {priority}" +
                 $" order by listNum";
-            DataTable data = _dbConnection.ReadData(readDataQuery).Tables[0];
+            DataSet dataSet = await _dbConnection.ReadData(readDataQuery);
+            DataTable data = dataSet.Tables[0];
 
             foreach (DataRow row in data.Rows)
             {

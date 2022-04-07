@@ -19,4 +19,8 @@
     <ProjectReference Include="..\TODO-Database\DatabaseConnection.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Model\" />
+  </ItemGroup>
+
 </Project>

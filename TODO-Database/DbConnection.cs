@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Threading.Tasks;
 
 namespace DatabaseConnection
 {
@@ -11,7 +12,7 @@ namespace DatabaseConnection
         { 
             _connection = new SqlConnection(connectionString);
         }
-        public DataSet ReadData(string sqlQuery)
+        public async Task<DataSet> ReadData(string sqlQuery)
         {
             _connection.Open();
             DataSet result = new DataSet();
@@ -21,18 +22,32 @@ namespace DatabaseConnection
             SqlDataAdapter adapater = new SqlDataAdapter();
             adapater.SelectCommand = sqlCommand;
             adapater.Fill(result);
-            _connection.Close();
+
+            await sqlCommand.DisposeAsync();
+            await _connection.CloseAsync();
             return result;
         }
-        public void ModifyData(string sqlQuery)
+        public async Task ModifyData(string sqlQuery)
         {
             _connection.Open();
-            using (SqlCommand sqlCommand = new SqlCommand(sqlQuery, _connection))
+            SqlCommand sqlCommand = new SqlCommand(sqlQuery, _connection);
+            
+            SqlTransaction transaction = _connection.BeginTransaction();
+            sqlCommand.Transaction = transaction;
+            sqlCommand.CommandType = CommandType.Text;
+
+            try
             {
-                sqlCommand.CommandType = CommandType.Text;
-                sqlCommand.ExecuteNonQuery();
+                await sqlCommand.ExecuteNonQueryAsync();
+                await transaction.CommitAsync();
             }
-            _connection.Close();
+            catch (Exception e)
+            {
+                transaction.Rollback();
+            }
+
+            await sqlCommand.DisposeAsync();
+            await _connection.CloseAsync();
         }
     }
 }
