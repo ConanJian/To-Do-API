@@ -9,9 +9,9 @@ namespace To_Do_API.Controllers
     [Route("[controller]")]
     public class ToDoController : ControllerBase
     {
-        //Next figure out how to use logger to log to a text file.
-        //Figure out how to use HttpResponse
-        //Create a separate controller for Linq testing?
+        //Figure out how to return the correct type
+        //Probably has to do with Headers and HttpResponse
+        //Also has to do with IActionResult
         private readonly ILogger<ToDoController> _logger;
         private readonly IConfiguration _config;
         private readonly ToDoConnection _connection;
@@ -34,7 +34,9 @@ namespace To_Do_API.Controllers
             }
             catch (Exception e)
             {
-                return e.Message;
+                JArray jArray = new JArray();
+                jArray.Add(new JObject("ErrorMessage", e.Message));
+                return jArray.ToString();
             }
         }
         
@@ -49,7 +51,9 @@ namespace To_Do_API.Controllers
             }
             catch (Exception e)
             {
-                return e.Message;
+                JArray jArray = new JArray();
+                jArray.Add(new JObject("ErrorMessage", e.Message));
+                return jArray.ToString();
             }
         }
         
