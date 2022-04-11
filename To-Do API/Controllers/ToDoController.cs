@@ -52,7 +52,9 @@ namespace To_Do_API.Controllers
             catch (Exception e)
             {
                 JArray jArray = new JArray();
-                jArray.Add(new JObject("ErrorMessage", e.Message));
+                JObject jObject = new JObject();
+                jObject.Add(new JProperty("ErrorMessage", e.Message));
+                jArray.Add(jObject);
                 return jArray.ToString();
             }
         }
@@ -91,6 +93,20 @@ namespace To_Do_API.Controllers
             }
             return "Success";
 
+        }
+
+        [HttpGet("GetLatestListNum")]
+        public async Task<string> LatestListNum()
+        {
+            try
+            {
+                int listNum = await _connection.GetMostRecentListNum();
+                return "" + listNum;
+            }
+            catch (Exception e)
+            {
+                return "ErrorMessage: "+e.Message;
+            }
         }
     }
 }

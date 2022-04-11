@@ -60,6 +60,14 @@ namespace DatabaseConnection
                 $" where listNum={listNum};";
             await _dbConnection.ModifyData(sqlQuery);
         }
+        public async Task<int> GetMostRecentListNum()
+        {
+            string sqlQuery = $"select top 1 listNum from ToDo" +
+                $" order by listNum Desc";
+            DataSet set = await _dbConnection.ReadData(sqlQuery);
+            DataTable toDoTable = set.Tables[0];
+            return (int)toDoTable.Rows[0]["listNum"];
+        }
         public async Task<List<ToDoModel>> GetPriorityToDoList(int priority)
         {
             List<ToDoModel> list = new List<ToDoModel>();
