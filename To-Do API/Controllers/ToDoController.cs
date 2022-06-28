@@ -35,7 +35,9 @@ namespace To_Do_API.Controllers
             catch (Exception e)
             {
                 JArray jArray = new JArray();
-                jArray.Add(new JObject("ErrorMessage", e.Message));
+                JObject jObject = new JObject();
+                jObject.Add(new JProperty("ErrorMessage", e.Message));
+                jArray.Add(jObject);
                 return jArray.ToString();
             }
         }
@@ -62,17 +64,21 @@ namespace To_Do_API.Controllers
         [HttpPost("CreateToDoItem")]
         public async Task<string> CreateToDoItem(string message, int priority)
         {
+            bool isSuccessful = false;
             if (priority <= 3 && priority >= 0)
             {
                 try
                 {
-                    await _connection.InsertToDoItem(message, priority);
+                    isSuccessful = await _connection.InsertToDoItem(message, priority);
                 }
                 catch (Exception e)
                 {
                     return e.Message;
                 }
-                return "Success";
+                if (isSuccessful)
+                    return "Success";
+                else
+                    return "Insert Failed";
             }
             else 
             {
@@ -83,15 +89,19 @@ namespace To_Do_API.Controllers
         [HttpPost("DeleteToDoItem")]
         public async Task<string> DeleteToDoItem(int listNum)
         {
+            bool isSuccessful = false;
             try
             {
-                await _connection.DeleteToDoItem(listNum);
+                isSuccessful = await _connection.DeleteToDoItem(listNum);
             }
             catch (Exception e)
             {
                 return e.Message;
             }
-            return "Success";
+            if (isSuccessful)
+                return "Success";
+            else
+                return "Delete Failed";
 
         }
 

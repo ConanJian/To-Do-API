@@ -27,7 +27,7 @@ namespace DatabaseConnection
             await _connection.CloseAsync();
             return result;
         }
-        public async Task ModifyData(string sqlQuery)
+        public async Task<bool> ModifyData(string sqlQuery)
         {
             _connection.Open();
             SqlCommand sqlCommand = new SqlCommand(sqlQuery, _connection);
@@ -44,10 +44,12 @@ namespace DatabaseConnection
             catch (Exception e)
             {
                 transaction.Rollback();
+                return false;
             }
 
             await sqlCommand.DisposeAsync();
             await _connection.CloseAsync();
+            return true;
         }
     }
 }

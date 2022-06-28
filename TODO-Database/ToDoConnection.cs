@@ -47,18 +47,18 @@ namespace DatabaseConnection
             }
             return list;
         }
-        public async Task InsertToDoItem(string message, int priority)
+        public async Task<bool> InsertToDoItem(string message, int priority)
         {
             string sqlQuery = $"insert into ToDo(\"message\", \"priority\")" +
                 $" values('{message}', {priority});";
 
-            await _dbConnection.ModifyData(sqlQuery);
+            return await _dbConnection.ModifyData(sqlQuery);
         }
-        public async Task DeleteToDoItem(int listNum)
+        public async Task<bool> DeleteToDoItem(int listNum)
         {
             string sqlQuery = $"delete from ToDo" +
                 $" where listNum={listNum};";
-            await _dbConnection.ModifyData(sqlQuery);
+            return await _dbConnection.ModifyData(sqlQuery);
         }
         public async Task<int> GetMostRecentListNum()
         {
