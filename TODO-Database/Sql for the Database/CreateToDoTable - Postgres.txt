@@ -1,0 +1,7 @@
+﻿create table ToDo(
+    listNum serial primary key,
+    "message" varchar(3000),
+    "priority" int check("priority" in (1, 2, 3))
+)
+
+--'Utmost', 'Do Soon', 'Can Wait' = 1, 2, 3

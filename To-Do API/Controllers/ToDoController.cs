@@ -14,13 +14,13 @@ namespace To_Do_API.Controllers
         //Also has to do with IActionResult
         private readonly ILogger<ToDoController> _logger;
         private readonly IConfiguration _config;
-        private readonly ToDoConnection _connection;
+        private readonly ToDoSqlServerConnection _connection;
 
         public ToDoController(ILogger<ToDoController> logger, IConfiguration config)
         {
             _logger = logger;
             _config = config;
-            _connection = new ToDoConnection(_config.GetRequiredSection("ConnectionStrings").GetValue<String>("DefaultConnection"));
+            _connection = new ToDoSqlServerConnection(_config.GetRequiredSection("ConnectionStrings").GetValue<String>("PostgresConnection"));
         }
         [HttpGet("GetEntireToDoList")]
         public async Task<string> GetEntireToDoList()

@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 namespace DatabaseConnection
 {
     //Class connects to Database and transforms the data to objects
-    public class ToDoConnection
+    public class ToDoSqlServerConnection
     {
         private readonly DbConnection _dbConnection;
-        public ToDoConnection(string connectionString)
+        public ToDoSqlServerConnection(string connectionString)
         { 
             _dbConnection = new DbConnection(connectionString);
         }
