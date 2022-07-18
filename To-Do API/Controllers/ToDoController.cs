@@ -1,4 +1,6 @@
 using DatabaseConnection;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -6,6 +8,7 @@ using Newtonsoft.Json.Linq;
 namespace To_Do_API.Controllers
 {
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("[controller]")]
     public class ToDoController : ControllerBase
     {
@@ -13,15 +16,14 @@ namespace To_Do_API.Controllers
         //Probably has to do with Headers and HttpResponse
         //Also has to do with IActionResult
         private readonly ILogger<ToDoController> _logger;
-        private readonly IConfiguration _config;
         private readonly ToDoSqlServerConnection _connection;
 
-        public ToDoController(ILogger<ToDoController> logger, IConfiguration config)
+        public ToDoController(ILogger<ToDoController> logger, ToDoSqlServerConnection todoConnection)
         {
             _logger = logger;
-            _config = config;
-            _connection = new ToDoSqlServerConnection(_config.GetRequiredSection("ConnectionStrings").GetValue<String>("PostgresConnection"));
+            _connection = todoConnection;
         }
+        
         [HttpGet("GetEntireToDoList")]
         public async Task<string> GetEntireToDoList()
         {
